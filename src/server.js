@@ -1,27 +1,26 @@
 import express from "express";
 import ConnectDb from "./config/connectDB";
-import ContactModel from "./models/contact.model";
+import configViewEngine from "./config/viewEngine";
+
+// Init app
 let app= express();
 
 // Connect MongoDb
 ConnectDb();
 
-app.get("/test-database", async(req,res)=>{
+// Config view Engine
+configViewEngine(app);
 
-    try{
-        let item={
-            userId:"1788766",
-            contactId:"122299877",
-        }
+app.get("/", (req,res)=>{
 
-        let contact=await ContactModel.createNew(item);
-        res.send(contact);
-    }
-    catch(err){
-        console.log(err);
-    }
+   return res.render("main/master");
 })
 
+app.get("/login-register", (req,res)=>{
+
+    return res.render("auth/loginRegister");
+ })
+
 app.listen(process.env.APP_PORT,process.env.APP_HOST, ()=>{
-    console.log("Listening");
+    console.log(`Listening: ${process.env.APP_PORT}`);
 })
