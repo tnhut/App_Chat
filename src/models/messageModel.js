@@ -16,7 +16,7 @@ let MessageSchema= new Schema({
     text: String,
     file: {data: Buffer, contentType: String, fileName:String},
     status:{type: Boolean, default:false},
-    createdAt:{type:Number, default: Date.Now},
+    createdAt:{type:Number, default: Date.now},
     updatedAt:{type:Number, default: null},
     deletedAt:{type:Number, default: null}
 });
