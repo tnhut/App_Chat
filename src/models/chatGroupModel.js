@@ -10,7 +10,7 @@ let ChatGroupSchema= new Schema({
     members:[
         {userId: String}
     ], 
-    createdAt:{type:Number, default: Date.Now},
+    createdAt:{type:Number, default: Date.now},
     updatedAt:{type:Number, default: null},
     deletedAt:{type:Number, default: null}
 });
