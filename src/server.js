@@ -2,6 +2,7 @@ import express from "express";
 import ConnectDb from "./config/connectDB";
 import configViewEngine from "./config/viewEngine";
 import initRoutes from "./routes/web";
+import bodyParser from "body-parser";
 
 // Init app
 let app= express();
@@ -11,6 +12,9 @@ ConnectDb();
 
 // Config view Engine
 configViewEngine(app);
+
+// Enable postdata when request
+app.use(bodyParser.urlencoded({extended:true}))
 
 // Init all Routes
 initRoutes(app);
