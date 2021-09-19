@@ -7,32 +7,69 @@ import connectFlash from "connect-flash";
 import configSession from "./config/session";
 import passport from "passport";
 
-// Init app
-let app= express();
+import pem from "pem";
+import https from "https";
 
-// Connect MongoDb
-ConnectDb();
+pem.createCertificate({ days: 1, selfSigned: true }, function (err, keys) {
+    if (err) {
+      throw err
+    }
+    // Init app
+    let app= express();
 
-// Config session
-configSession(app);
+    // Connect MongoDb
+    ConnectDb();
 
-// Config view Engine
-configViewEngine(app);
+    // Config session
+    configSession(app);
 
-// Enable postdata when request
-app.use(bodyParser.urlencoded({extended:true}))
+    // Config view Engine
+    configViewEngine(app);
 
-// Enable Flash message
-app.use(connectFlash());
+    // Enable postdata when request
+    app.use(bodyParser.urlencoded({extended:true}))
 
-// Config passport
-app.use(passport.initialize());
-app.use(passport.session());
+    // Enable Flash message
+    app.use(connectFlash());
 
-// Init all Routes
-initRoutes(app);
+    // Config passport
+    app.use(passport.initialize());
+    app.use(passport.session());
 
-
-app.listen(process.env.APP_PORT,process.env.APP_HOST, ()=>{
-    console.log(`Listening: ${process.env.APP_PORT}`);
+    // Init all Routes
+    initRoutes(app);
+   
+    https.createServer({ key: keys.serviceKey, cert: keys.certificate }, app).listen(process.env.APP_PORT,process.env.APP_HOST, ()=>{
+        console.log(`Listening: ${process.env.APP_PORT}`);
+    });
 })
+
+
+//  // Init app
+//  let app= express();
+
+//  // Connect MongoDb
+//  ConnectDb();
+
+//  // Config session
+//  configSession(app);
+
+//  // Config view Engine
+//  configViewEngine(app);
+
+//  // Enable postdata when request
+//  app.use(bodyParser.urlencoded({extended:true}))
+
+//  // Enable Flash message
+//  app.use(connectFlash());
+
+//  // Config passport
+//  app.use(passport.initialize());
+//  app.use(passport.session());
+
+//  // Init all Routes
+//  initRoutes(app);
+
+// app.listen(process.env.APP_PORT,process.env.APP_HOST, ()=>{
+//     console.log(`Listening: ${process.env.APP_PORT}`);
+// })
