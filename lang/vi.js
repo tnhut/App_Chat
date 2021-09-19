@@ -22,7 +22,8 @@ export const transSuccess={
     account_actived:"Kích hoạt tài khoản thành công. Bạn có thể đăng nhập được vào ứng dụng",
     loginSuccess:(username)=>{
         return `Xin chào ${username}`;
-    }
+    },
+    logout_success:"Đăng xuất thành công"
 };
 
 export const transMail={
