@@ -30,15 +30,15 @@
                                 </div>
                                 <!-- edit form column -->
                                 <div class="col-md-9 personal-info">
-                                    <div class="alert alert-danger alert-dismissable">
+                                    <div class="alert alert-danger alert-dismissable user-modal-alert-error">
                                         <a class="panel-close close" data-dismiss="alert">×</a>
-                                        Update user error example.<br>
+                                        <span>user error example.</span> 
                                         <!-- <script>openProfileModal();</script> -->
                                     </div>
 
-                                    <div class="alert alert-success alert-dismissable">
+                                    <div class="alert alert-success alert-dismissable user-modal-alert-success">
                                         <a class="panel-close close" data-dismiss="alert">×</a>
-                                        Update user success example.<br>
+                                        <span>Update user success example.</span>
                                         <!-- <script>openProfileModal();</script> -->
                                     </div>
                                     <% if(user.local.email){ %> 
@@ -111,7 +111,7 @@
                                             <input type="button" class="btn btn-primary custom-background-btn-primary"
                                               id="input-btn-update-user"  name="button" value="Lưu lại">
                                             <span></span>
-                                            <input type="reset" class="btn btn-default custom-background-btn-reset"
+                                            <input type="button" class="btn btn-default custom-background-btn-reset"
                                               id="input-btn-cancel-update-user"  value="Hủy bỏ">
                                         </div>
                                     </div>
