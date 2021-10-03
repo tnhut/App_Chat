@@ -7,7 +7,8 @@ export const transValidation={
     update_username:"UserName giới hạn 10->17 ký tự và không được phép chứa ký tự đặc biệt.",
     update_gender:"Dư liệu giới tính có vấn đề",
     update_address:"Địa chỉ giới hạn 10->30 ký tự",
-    update_phone:"Số điện thoại bắt đầu từ 0, giơi hạn đến 10,11 ký tự"
+    update_phone:"Số điện thoại bắt đầu từ 0, giơi hạn đến 10,11 ký tự",
+    keyword_find_user:"Lỗi từ khóa tìm kiếm, chỉ cho phép ký tự chữ và số"
 };
 
 export const transErrors={
