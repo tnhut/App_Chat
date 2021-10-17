@@ -27,6 +27,41 @@ ContactSchema.statics={
                 {"contactId":userId}
             ]
         }).exec();
+    },
+
+    /**
+     * Check Exists of user
+     * Kiểm tra cho 2 TH: 1) Giả sửa A gửi loi mời KB cho B. 2) B có gửi lời mời cho A hay chưa
+     * @param {string} userId 
+     * @param {string} contactId 
+     */
+    checkExists(userId,contactId){
+        return this.findOne({
+            $or:[
+                {$and:[
+                    {"userId":userId},
+                    {"contactId":contactId}
+                ]},
+                {$and:[
+                    {"userId":contactId},
+                    {"contactId":userId}
+                ]}
+            ]
+        }).exec();
+    },
+
+    /**
+     * Remove request
+     * @param {*} userId 
+     * @param {*} contactId 
+     */
+    removeRequestContact(userId,contactId){
+        return this.remove({
+            $and:[
+                {"userId":userId},
+                {"contactId":contactId}
+            ]
+        }).exec();
     }
 }
 

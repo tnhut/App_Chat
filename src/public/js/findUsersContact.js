@@ -1,7 +1,7 @@
 function callFindUsers(element){
     if(element.which===13 || (element.type==="click")){
         debugger
-        let keyword=$(this).val();
+        let keyword=$('#input-find-users-contact').val();
         let regexKeyword=new RegExp(/^[\s0-9a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ ]+$/);
 
         if(!keyword.length){
@@ -17,6 +17,8 @@ function callFindUsers(element){
 
         $.get(`/contact/find-users/${keyword}`, function(data){
             $("#find-user ul").html(data);
+            addContact(); // addContact.js
+            removeRequestContact() // removeRequestContact.js
         });
     }
 }
