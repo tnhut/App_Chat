@@ -4,8 +4,13 @@ import configViewEngine from "./config/viewEngine";
 import initRoutes from "./routes/web";
 import bodyParser from "body-parser";
 import connectFlash from "connect-flash";
-import configSession from "./config/session";
+import session from "./config/session";
 import passport from "passport";
+import http from "http";
+import socketio from "socket.io";
+import initSockets from "./sockets/index";
+import cookieParser from "cookie-parser";
+import configSocketIo from "./config/socketio";
 
 // import pem from "pem";
 // import https from "https";
@@ -48,11 +53,14 @@ import passport from "passport";
  // Init app
  let app= express();
 
+ // Init server with socket.io & express app
+ let server=http.createServer(app); 
+ let io=socketio(server);
  // Connect MongoDb
  ConnectDb();
 
  // Config session
- configSession(app);
+ session.config(app);
 
  // Config view Engine
  configViewEngine(app);
@@ -63,6 +71,9 @@ import passport from "passport";
  // Enable Flash message
  app.use(connectFlash());
 
+ // User Cookie Parser
+ app.use(cookieParser()); 
+
  // Config passport
  app.use(passport.initialize());
  app.use(passport.session());
@@ -70,6 +81,12 @@ import passport from "passport";
  // Init all Routes
  initRoutes(app);
 
-app.listen(process.env.APP_PORT,process.env.APP_HOST, ()=>{
+ //Config for socketIo
+ configSocketIo(io,cookieParser,session.seesionStore);
+
+ // Init all Sockets
+ initSockets(io);
+
+ server.listen(process.env.APP_PORT,process.env.APP_HOST, ()=>{
     console.log(`Listening: ${process.env.APP_PORT}`);
 })
