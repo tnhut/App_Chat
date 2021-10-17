@@ -10,6 +10,10 @@ export DB_PASSWORD=***;
 export APP_HOST=***
 export APP_PORT=***
 
+#Config session key & secret
+export SESSION_KEY=***
+export SESSION_SECRET=***
+
 #Config email Account
 export MAIL_USER=***
 export MAIL_PASSWORD=***
