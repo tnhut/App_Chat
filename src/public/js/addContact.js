@@ -14,9 +14,9 @@ function addContact(){
 }
 
 socket.on("response-add-new-contact",function(user){
-    let noti=` <span data-uid="${ user.id }">
+    let noti=` <span class="notif-readed-false" data-uid="${ user.id }">
                     <img class="avatar-small" src="images/users/${ user.avatar }"alt="">
-                    <strong>${ user.username }</strong> đã chấp nhận lời mời kết bạn của bạn!
+                    <strong>${ user.username }</strong> đã gửi cho bạn một lời mời kết bạn!
                 </span><br><br><br>`;
     $(".noti_content").prepend(noti);
     increaseNumberNotifContact("count-request-contact-received");
