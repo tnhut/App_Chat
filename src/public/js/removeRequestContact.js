@@ -18,7 +18,10 @@ function removeRequestContact(){
 }
 
 socket.on("response-remove-request-contact",function(user){
-    $(".noti_content").find(`span[data-uid=${user.id}]`).remove();
+    // xoa popup notif
+    $(".noti_content").find(`div[data-uid=${user.id}]`).remove();
+    // xoa modal notif
+    $("ul.list-notifications").find(`li>div[data-uid=${user.id}]`).parent().remove();
     decreaseNumberNotifContact("count-request-contact-received");
 
     decreaseNumberNotification("noti_contact_counter");
