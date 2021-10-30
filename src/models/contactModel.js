@@ -62,6 +62,111 @@ ContactSchema.statics={
                 {"contactId":contactId}
             ]
         }).exec();
+    },
+
+    /**
+     * Get Contacts by UserId
+     * @param {String} userId 
+     * @param {Number} limit 
+     * @returns 
+     */
+    getContacts(userId,limit){
+        // Lay ra 1 trong 2 TH
+        // 1 mình gửi ket bn cho ngươi khac va được accept)
+        // 2 người khác gửi ket bn cho mình va được accept)
+        return this.find({
+            $and:[
+                {$or:[
+                    {"userId":userId},
+                    {"contactId":userId}
+                ]},
+                {"status":true},
+            ]
+        }).sort({
+            "createdAt":-1
+        }).limit(limit).exec();
+    },
+
+    /**
+     * Get ContactSent by UserId
+     * @param {String} userId 
+     * @param {Number} limit 
+     * @returns 
+     */
+     getContactSent(userId,limit){
+        return this.find({
+            $and:[
+                {"userId":userId},
+                {"status":false},
+            ]
+        }).sort({
+            "createdAt":-1
+        }).limit(limit).exec();
+    },
+
+     /**
+     * Get ContactReceived by UserId
+     * @param {String} userId 
+     * @param {Number} limit 
+     * @returns 
+     */
+      getContactReceived(userId,limit){
+        return this.find({
+            $and:[
+                {"contactId":userId},
+                {"status":false},
+            ]
+        }).sort({
+            "createdAt":-1
+        }).limit(limit).exec();
+    },
+
+     /**
+     * CountAll Contacts by UserId
+     * @param {String} userId 
+     * @returns 
+     */
+      countAllcontacts(userId){
+        // Lay ra 1 trong 2 TH
+        // 1 mình gửi ket bn cho ngươi khac va được accept)
+        // 2 người khác gửi ket bn cho mình va được accept)
+        return this.count({
+            $and:[
+                {$or:[
+                    {"userId":userId},
+                    {"contactId":userId}
+                ]},
+                {"status":true},
+            ]
+        }).exec();
+    },
+
+    /**
+     * CountAll ContactSent by UserId
+     * @param {String} userId 
+     * @returns 
+     */
+     countAllcontactsSent(userId){
+        return this.count({
+            $and:[
+                {"userId":userId},
+                {"status":false},
+            ]
+        }).exec();
+    },
+
+     /**
+     * CountAll ContactReceived by UserId
+     * @param {String} userId 
+     * @returns 
+     */
+      countAllcontactsReceived(userId){
+        return this.count({
+            $and:[
+                {"contactId":userId},
+                {"status":false},
+            ]
+        }).exec();
     }
 }
 
