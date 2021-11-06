@@ -160,13 +160,66 @@ ContactSchema.statics={
      * @param {String} userId 
      * @returns 
      */
-      countAllcontactsReceived(userId){
+    countAllcontactsReceived(userId){
         return this.count({
             $and:[
                 {"contactId":userId},
                 {"status":false},
             ]
         }).exec();
+    },
+    /**
+     * Get more contact
+     * @param {*} userId 
+     * @param {*} skip 
+     * @param {*} limit 
+     */
+    readMoreContacts(userId,skip,limit){
+        return this.find({
+            $and:[
+                {$or:[
+                    {"userId":userId},
+                    {"contactId":userId}
+                ]},
+                {"status":true},
+            ]
+        }).sort({
+            "createdAt":-1
+        }).skip(skip).limit(limit).exec();
+    },
+    /**
+     * Get more contact Sent by userid
+     * @param {*} userId 
+     * @param {*} skip 
+     * @param {*} limit 
+     * @returns 
+     */
+    readMoreContactsSent(userId,skip,limit){
+        return this.find({
+            $and:[
+                {"userId":userId},
+                {"status":false},
+            ]
+        }).sort({
+            "createdAt":-1
+        }).skip(skip).limit(limit).exec();
+    },
+    /**
+     * Get more contact Received
+     * @param {*} userId 
+     * @param {*} skip 
+     * @param {*} limit 
+     * @returns 
+     */
+    readMoreContactsReceived(userId,skip,limit){
+        return this.find({
+            $and:[
+                {"contactId":userId},
+                {"status":false},
+            ]
+        }).sort({
+            "createdAt":-1
+        }).skip(skip).limit(limit).exec();
     }
 }
 
