@@ -64,7 +64,7 @@ let initRoutes= (app)=>{
 
     router.post("/contact/add-new",auth.checkLoggedIn, contact.addNew);
     
-    router.delete("/contact/remove-request-contact",auth.checkLoggedIn, contact.removeRequestContact);
+    router.delete("/contact/remove-request-contact-sent",auth.checkLoggedIn, contact.removeRequestContactSent);
 
     router.get("/notification/read-more",auth.checkLoggedIn, notification.readMore);
 
