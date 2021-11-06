@@ -196,6 +196,21 @@ let readMoreContactsSent=(currentUserId,skipNumberContact)=>{
     })
 }
 
+let removeRequestContactReceived=(currentUserId,contactId)=>{
+    return new Promise(async(resolve,reject)=>{
+        let removeRequest=await ContactModel.removeRequestContactReceived(currentUserId,contactId);
+        if(removeRequest.result.n===0){
+            return reject(false);
+        }
+
+        // Tạm thời ko xóa notification
+        // remove notification
+        //let notifTypeAddContact=NotificationModel.types.ADD_CONTACT;
+        //await NotificationModel.model.removeRequestContactReceivedNotification(currentUserId,contactId,notifTypeAddContact);
+        resolve(true);
+    })
+}
+
 let readMoreContactsReceived=(currentUserId,skipNumberContact)=>{
     return new Promise(async(resolve,reject)=>{
         try {
@@ -219,6 +234,7 @@ module.exports={
     findUserContact:findUserContact,
     addNew:addNew,
     removeRequestContactSent:removeRequestContactSent,
+    removeRequestContactReceived:removeRequestContactReceived,
     getContacts:getContacts,
     getContactSent:getContactSent,
     getContactReceived:getContactReceived,

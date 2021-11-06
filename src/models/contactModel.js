@@ -51,7 +51,7 @@ ContactSchema.statics={
     },
 
     /**
-     * Remove request
+     * Remove request Contact Sent
      * @param {*} userId 
      * @param {*} contactId 
      */
@@ -60,6 +60,21 @@ ContactSchema.statics={
             $and:[
                 {"userId":userId},
                 {"contactId":contactId}
+            ]
+        }).exec();
+    },
+
+      /**
+     * Remove Request Contact Received
+     * @param {*} userId 
+     * @param {*} contactId 
+     */
+       removeRequestContactReceived(userId,contactId){
+        return this.remove({
+            $and:[
+                {"contactId":userId},
+                {"userId":contactId}
+               
             ]
         }).exec();
     },
