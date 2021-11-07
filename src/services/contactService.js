@@ -2,7 +2,7 @@ import ContactModel from "./../models/contactModel";
 import UserModel from "./../models/userModel";
 import NotificationModel from "./../models/notificationModel";
 import _ from "lodash";
-const LIMIT_NUMBER_TAKEN=10;
+const LIMIT_NUMBER_TAKEN=1;
 
 let findUserContact=(currentUserId,keyword)=>{
     return new Promise(async(resolve,reject)=>{
@@ -211,6 +211,25 @@ let removeRequestContactReceived=(currentUserId,contactId)=>{
     })
 }
 
+let approveRequestContactReceived=(currentUserId,contactId)=>{
+    return new Promise(async(resolve,reject)=>{
+        let approveRequest=await ContactModel.approveRequestContactReceived(currentUserId,contactId);
+        if(approveRequest.nModified===0){
+            return reject(false);
+        }
+
+        // Create notification
+        let notificationItem={
+            senderId: currentUserId,
+            receiverId:contactId,
+            type: NotificationModel.types.APPROVE_CONTACT
+        };
+
+        await NotificationModel.model.createNew(notificationItem);
+        resolve(true);
+    })
+}
+
 let readMoreContactsReceived=(currentUserId,skipNumberContact)=>{
     return new Promise(async(resolve,reject)=>{
         try {
@@ -235,6 +254,7 @@ module.exports={
     addNew:addNew,
     removeRequestContactSent:removeRequestContactSent,
     removeRequestContactReceived:removeRequestContactReceived,
+    approveRequestContactReceived:approveRequestContactReceived,
     getContacts:getContacts,
     getContactSent:getContactSent,
     getContactReceived:getContactReceived,

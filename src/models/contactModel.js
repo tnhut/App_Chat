@@ -55,11 +55,12 @@ ContactSchema.statics={
      * @param {*} userId 
      * @param {*} contactId 
      */
-     removeRequestContactSent(userId,contactId){
+    removeRequestContactSent(userId,contactId){
         return this.remove({
             $and:[
                 {"userId":userId},
-                {"contactId":contactId}
+                {"contactId":contactId},             
+                {"status":false}
             ]
         }).exec();
     },
@@ -69,15 +70,33 @@ ContactSchema.statics={
      * @param {*} userId 
      * @param {*} contactId 
      */
-       removeRequestContactReceived(userId,contactId){
+    removeRequestContactReceived(userId,contactId){
         return this.remove({
             $and:[
                 {"contactId":userId},
-                {"userId":contactId}
+                {"userId":contactId},
+                {"status":false}
                
             ]
         }).exec();
     },
+
+    /**
+     * approve Request Contact Received
+     * @param {*} userId 
+     * @param {*} contactId 
+     */
+    approveRequestContactReceived(userId,contactId){
+            return this.update({
+                $and:[
+                    {"contactId":userId},
+                    {"userId":contactId},
+                    {"status":false}
+                   
+                ]
+            }, {"status":true}).exec();
+    },
+    
 
     /**
      * Get Contacts by UserId
@@ -108,7 +127,7 @@ ContactSchema.statics={
      * @param {Number} limit 
      * @returns 
      */
-     getContactSent(userId,limit){
+    getContactSent(userId,limit){
         return this.find({
             $and:[
                 {"userId":userId},
@@ -125,7 +144,7 @@ ContactSchema.statics={
      * @param {Number} limit 
      * @returns 
      */
-      getContactReceived(userId,limit){
+    getContactReceived(userId,limit){
         return this.find({
             $and:[
                 {"contactId":userId},
@@ -141,7 +160,7 @@ ContactSchema.statics={
      * @param {String} userId 
      * @returns 
      */
-      countAllcontacts(userId){
+    countAllcontacts(userId){
         // Lay ra 1 trong 2 TH
         // 1 mình gửi ket bn cho ngươi khac va được accept)
         // 2 người khác gửi ket bn cho mình va được accept)
@@ -161,7 +180,7 @@ ContactSchema.statics={
      * @param {String} userId 
      * @returns 
      */
-     countAllcontactsSent(userId){
+    countAllcontactsSent(userId){
         return this.count({
             $and:[
                 {"userId":userId},
