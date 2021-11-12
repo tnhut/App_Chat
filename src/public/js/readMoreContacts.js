@@ -42,6 +42,8 @@ $(document).ready(function(){
                     </li>`)   
             })
 
+            removeContact();// Khởi tạo hàm xóa liên hệ
+            
             $("#link-read-more-contacts").css("display","inline-block");
             $(".read-more-contacts-loader").css("display","none");
         });
