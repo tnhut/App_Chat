@@ -31,6 +31,11 @@ function approveRequestContactReceived(){
                     // Giảm so luong thông báo ngoài icon
                     decreaseNumberNotification("noti_contact_counter",1);
 
+                    removeContact();// Khởi tạo hàm xóa liên hệ
+
+                    // Sau này làm chat thì quay lại bổ sung
+
+
                     socket.emit("approve-request-contact-received",{contactId:targetId});
                 }
             }
@@ -85,6 +90,10 @@ socket.on("response-approve-request-contact-received",function(user){
         </li>
     `
     $("#contacts").find("ul").prepend(userInfoHtml);
+
+    removeContact();// Khởi tạo hàm xóa liên hệ
+    
+     // Sau này làm chat thì quay lại bổ sung
 })
 
 $(document).ready(function(){
