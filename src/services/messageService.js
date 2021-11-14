@@ -15,13 +15,13 @@ let getAllConversationItems=(currentUserId)=>{
                 if(contact.contactId==currentUserId){
                    
                     let getUserContact= await UserModel.getNormalUserDataById(contact.userId);                
-                    getUserContact.createAt=contact.createAt;
+                    getUserContact.updatedAt=contact.updatedAt;
                     return getUserContact;
                 }
                 else{
                     
                     let getUserContact= await UserModel.getNormalUserDataById(contact.contactId);
-                    getUserContact.createAt=contact.createAt;
+                    getUserContact.updatedAt=contact.updatedAt;
                     return getUserContact;
                 }
             })
@@ -31,7 +31,7 @@ let getAllConversationItems=(currentUserId)=>{
             let allConversations=usersConversations.concat(groupConversations);
             // Sort by desc
             allConversations=_.sortBy(allConversations,(item)=>{
-                return -item.createAt;
+                return -item.updatedAt;
             })
             reslove(
                 {
