@@ -1,9 +1,11 @@
 import ContactModel from "./../models/contactModel";
 import UserModel from "./../models/userModel";
 import ChatGroupModel from "./../models/chatGroupModel";
+import MessageModel from "./../models/messageModel";
 import _ from "lodash";
 
 const LIMIT_CONVERSATIONS_TAKEN=15;
+const LIMIT_MESSAGE_TAKEN=30;
 
 let getAllConversationItems=(currentUserId)=>{
     return new Promise(async(reslove,reject)=>{
@@ -32,12 +34,28 @@ let getAllConversationItems=(currentUserId)=>{
             // Sort by desc
             allConversations=_.sortBy(allConversations,(item)=>{
                 return -item.updatedAt;
+            });
+            // Get message to apply screenchat
+            let allConversationWithMessagePromise=allConversations.map(async(conversation)=>{
+                let getMessage=await MessageModel.model.getMessages(currentUserId,conversation._id,LIMIT_MESSAGE_TAKEN);
+                //Convert to Object
+                conversation=conversation.toObject();
+                conversation.messages=getMessage;
+              
+                return conversation;
+            });
+            
+            let allConversationWithMessage=await Promise.all(allConversationWithMessagePromise);
+            //Sort by updatedat desc
+            allConversationWithMessage=_.sortBy(allConversationWithMessage, (item)=>{
+                return -item.updatedAt;
             })
             reslove(
                 {
                     usersConversations:usersConversations,
                     groupConversations:groupConversations,
-                    allConversations:allConversations                
+                    allConversations:allConversations,
+                    allConversationWithMessage:allConversationWithMessage              
                 }
             );
 
