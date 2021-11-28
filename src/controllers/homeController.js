@@ -1,4 +1,5 @@
 import {notification,contact, message} from "./../services/index";
+import {bufferToBase64} from "./../helpers/clientHelper";
 
 let getHome=async(req,res)=>{
    // Get 10 item once
@@ -20,6 +21,8 @@ let getHome=async(req,res)=>{
    let allConversations=getAllConversationItems.allConversations;
    let usersConversations=getAllConversationItems.usersConversations;
    let groupConversations=getAllConversationItems.groupConversations;
+   // get all message 
+   let allConversationWithMessage=getAllConversationItems.allConversationWithMessage;
     return res.render("main/home/home",{
         errors: req.flash("errors"),
         success: req.flash("success"),
@@ -35,6 +38,8 @@ let getHome=async(req,res)=>{
         allConversations:allConversations,
         usersConversations:usersConversations,
         groupConversations:groupConversations,
+        allConversationWithMessage:allConversationWithMessage,
+        bufferToBase64:bufferToBase64
     });
 };
 
