@@ -52,9 +52,7 @@ let getAllConversationItems=(currentUserId)=>{
             })
             reslove(
                 {
-                    usersConversations:usersConversations,
-                    groupConversations:groupConversations,
-                    allConversations:allConversations,
+   
                     allConversationWithMessage:allConversationWithMessage              
                 }
             );
