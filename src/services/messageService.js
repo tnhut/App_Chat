@@ -37,11 +37,17 @@ let getAllConversationItems=(currentUserId)=>{
             });
             // Get message to apply screenchat
             let allConversationWithMessagePromise=allConversations.map(async(conversation)=>{
-                let getMessage=await MessageModel.model.getMessages(currentUserId,conversation._id,LIMIT_MESSAGE_TAKEN);
-                //Convert to Object
                 conversation=conversation.toObject();
-                conversation.messages=getMessage;
+                if(conversation.members){
+                    let getMessage=await MessageModel.model.getMessagesInGroup(conversation._id,LIMIT_MESSAGE_TAKEN);
+                    conversation.messages=getMessage;
+                }
+                else{
+                    let getMessage=await MessageModel.model.getMessagesInPersonal(currentUserId,conversation._id,LIMIT_MESSAGE_TAKEN);
+                    conversation.messages=getMessage;
+                }
               
+                       
                 return conversation;
             });
             
