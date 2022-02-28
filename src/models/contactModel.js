@@ -281,6 +281,27 @@ ContactSchema.statics={
         }).sort({
             "createdAt":-1
         }).skip(skip).limit(limit).exec();
+    },
+    /**
+     * Update contact when add new message
+     * @param {String} userId 
+     * @param {String} contactId 
+     */
+    updateWhenHasNewMessage(userId,contactId){
+        return this.update({
+            $or:[
+                {$and:[
+                    {"userId":userId},
+                    {"contactId":contactId}
+                ]},
+                {$and:[
+                    {"userId":contactId},
+                    {"contactId":userId}
+                ]}
+            ]
+        }, {
+            "updatedAt":Date.now()
+        }).exec();
     }
 }
 
