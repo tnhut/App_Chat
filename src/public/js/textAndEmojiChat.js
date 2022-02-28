@@ -19,9 +19,9 @@ function textAndEmojiChat(divId){
         
             // Send message to server
             $.post("/message/add-new-text-emoji",dataTextEmojiForSend, function(data){
-
+                console.log(data.message);
             }).fail(function(err){
-
+                alertify.notify(err.responseText,"error",7);
             })
         }
     })

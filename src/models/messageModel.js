@@ -27,6 +27,15 @@ let MessageSchema= new Schema({
 
 MessageSchema.statics={
     /**
+     * Create new Message
+     * @param {object} item 
+     * @returns 
+     */
+    createNew(item){
+        return this.create(item);
+    },
+
+    /**
      * Get limit item message
      * @param {*} senderId 
      * @param {*} receiverId 
