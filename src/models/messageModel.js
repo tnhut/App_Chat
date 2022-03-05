@@ -53,7 +53,7 @@ MessageSchema.statics={
                     {"senderId":receiverId}
                 ]}
             ]
-        }).sort({createdAt:1}).limit(limit).exec();
+        }).sort({createdAt:-1}).limit(limit).exec();
     },
     /**
      * Get message in group
@@ -61,7 +61,7 @@ MessageSchema.statics={
      * @param {number} limit 
      */
     getMessagesInGroup(receiverId,limit){
-        return this.find( {"receiverId":receiverId}).sort({createdAt:1}).limit(limit).exec();
+        return this.find( {"receiverId":receiverId}).sort({createdAt:-1}).limit(limit).exec();
     }
 };
 

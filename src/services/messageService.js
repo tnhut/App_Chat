@@ -43,11 +43,11 @@ let getAllConversationItems=(currentUserId)=>{
                 conversation=conversation.toObject();
                 if(conversation.members){
                     let getMessage=await MessageModel.model.getMessagesInGroup(conversation._id,LIMIT_MESSAGE_TAKEN);
-                    conversation.messages=getMessage;
+                    conversation.messages=_.reverse(getMessage) ;
                 }
                 else{
                     let getMessage=await MessageModel.model.getMessagesInPersonal(currentUserId,conversation._id,LIMIT_MESSAGE_TAKEN);
-                    conversation.messages=getMessage;
+                    conversation.messages=_.reverse(getMessage) ;
                 }
               
                        
