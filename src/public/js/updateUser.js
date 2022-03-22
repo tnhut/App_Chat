@@ -36,17 +36,17 @@ function updateUserInfo(){
         let match=["image/png","image/jpg","image/jpeg"];
         let limit=1048576; // byte=1M
 
-        // if($.inArray(fileData.type,match)===-1){
-        //     alertify.notify("Kiểu File không hợp lệ","error",7);
-        //     $(this).val(null);
-        //     return false;
-        // }
+        if($.inArray(fileData.type,match)===-1){
+            alertify.notify("Kiểu File không hợp lệ","error",7);
+            $(this).val(null);
+            return false;
+        }
 
-        // if(fileData.size >limit){
-        //     alertify.notify("Ảnh upload cho phép tối đa 1M","error",7);
-        //     $(this).val(null);
-        //     return false;
-        // }
+        if(fileData.size >limit){
+            alertify.notify("Ảnh upload cho phép tối đa 1M","error",7);
+            $(this).val(null);
+            return false;
+        }
         
         if(typeof(FileReader)!="undefined"){
             let imagePreview=$("#image-edit-profile");
@@ -64,7 +64,7 @@ function updateUserInfo(){
             fileReader.readAsDataURL(fileData);
 
             let formData=new FormData();
-            formData.append("avatar", fileData);
+            formData.append("my-image-chat", fileData);
             userAvatar=formData;
         }
         else{

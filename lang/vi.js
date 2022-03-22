@@ -23,7 +23,9 @@ export const transErrors={
     avatar_type:"Kiểu File không hợp lệ",
     avatar_size:"Ảnh upload cho phép tối đa 1M",
     user_current_password_failed:"Mật khẩu hiện tại không chính xác",
-    conversation_not_found:"Trò chuyện không tồn tại"
+    conversation_not_found:"Trò chuyện không tồn tại",
+    image_message_type:"Kiểu File không hợp lệ",
+    image_message_size:"Ảnh upload cho phép tối đa 1M"
     
 };
 
