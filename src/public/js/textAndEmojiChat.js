@@ -67,6 +67,15 @@ function textAndEmojiChat(divId){
                 // Step 06: Emit Realtime
                 socket.emit("chat-text-emoji",dataToEmit);
 
+                // Step 07: Emit remove typing real-time
+                typingOff(divId);
+
+                // Step 08: If this is typing, remove it
+                let checkTyping=$(`.chat[data-chat=${divId}]`).find("div.buble-typing-gif");
+                if(checkTyping.length){
+                    checkTyping.remove();
+                }
+
             }).fail(function(err){
                 alertify.notify(err.responseText,"error",7);
             })
@@ -77,7 +86,7 @@ function textAndEmojiChat(divId){
 $(document).ready(function(){
     socket.on("response-chat-text-emoji",function(reponse){
         let divId="";
-        console.log("etst");
+      
         // Step 01: Xử lý message data trước khi show
         let messageOfYou=$(`<div class="bubble you data-mess-id="${reponse.message._id}"></div>`);
         messageOfYou.text(reponse.message.text);
