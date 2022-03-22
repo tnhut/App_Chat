@@ -41,8 +41,14 @@ function enableEmojioneArea(divId) {
         $(`#write-chat-${divId}`).val(this.getText());
       },
       click: function(){
-
+        // bật lắng nghe Dom cho viec chat
         textAndEmojiChat(divId);
+        // Bật chức năng user đang gõ tin nhan
+        typingOn(divId);
+      },
+      blur:function(){
+        // Tắt chuc năng khi user focus ben ngoai
+        typingOff(divId);
       }
     },
   });
