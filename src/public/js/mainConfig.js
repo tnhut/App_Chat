@@ -197,6 +197,9 @@ function changeScreenChat(){
 
     //Sự kien cho việc send hình anh trong tin nhan
     imageChat(divId);
+
+    //Sự kien cho việc send tep trong tin nhan
+    attachmentChat(divId);
   })
 }
 
@@ -213,6 +216,12 @@ function convertEmoji(){
 
 function hoverItemChatInitPage(){
   $("ul.people").find("a")[0].click();
+}
+
+function bufferToBase64(buffer){
+  return btoa(new Uint8Array(buffer)
+  .reduce((data,byte)=>data+String.fromCharCode(byte),'')
+  );
 }
 
 $(document).ready(function() {

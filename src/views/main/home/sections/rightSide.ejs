@@ -7,7 +7,7 @@
                     <div class="top">
                         <span>To: <span class="name"><%=conversation.name%></span></span>
                         <span class="chat-menu-right">
-                            <a href="#attachsModal_<%=conversation._id%>" class="show-attachs" data-toggle="modal">
+                            <a href="#attachmentsModal_<%=conversation._id%>" class="show-attachments" data-toggle="modal">
                                 Tệp đính kèm
                                 <i class="fa fa-paperclip"></i>
                             </a>
@@ -74,7 +74,7 @@
 
                                         <div 
                                             class="bubble <%if(message.senderId == user._id) { %> me 
-                                            <% }else { %>you <% } %>" data-mess-id="<%=message._id  %> bubble-image-file" 
+                                            <% }else { %>you <% } %>" data-mess-id="<%=message._id  %> bubble-attachment-file" 
                                             data-mess-id="<%=message._id  %>">
 
                                             <img src="/images/users/<%=message.sender.avatar %> "
@@ -104,8 +104,9 @@
                                  class="image-chat chat-in-group" data-chat="<%=conversation._id%>">
                                 <i class="fa fa-photo"></i>
                             </label>
-                            <label for="attach-chat">
-                                <input type="file" id="attach-chat" name="my-attach-chat" class="attach-chat" 
+                            <label for="attachment-chat-<%=conversation._id%>">
+                                <input type="file" id="attachment-chat-<%=conversation._id%>" name="my-attachment-chat" 
+                                class="attachment-chat chat-in-group" 
                                 data-chat="<%=conversation._id%>">
                                 <i class="fa fa-paperclip"></i>
                             </label>
@@ -125,7 +126,7 @@
                     <div class="top">
                         <span>To: <span class="name"><%=conversation.username%></span></span>
                         <span class="chat-menu-right">
-                            <a href="#attachsModal_<%=conversation._id%>" class="show-attachs" data-toggle="modal">
+                            <a href="#attachmentsModal_<%=conversation._id%>" class="show-attachments" data-toggle="modal">
                                 Tệp đính kèm
                                 <i class="fa fa-paperclip"></i>
                             </a>
@@ -169,7 +170,7 @@
 
                                         <div 
                                             class="bubble <%if(message.senderId == user._id) { %> me 
-                                            <% }else { %>you <% } %>" data-mess-id="<%=message._id  %> bubble-image-file" 
+                                            <% }else { %>you <% } %>" data-mess-id="<%=message._id  %> bubble-attachment-file" 
                                             data-mess-id="<%=message._id  %>">
 
                                             <a href="data:<%=message.file.contentType %>
@@ -196,8 +197,8 @@
                                 data-chat="<%=conversation._id%>">
                                 <i class="fa fa-photo"></i>
                             </label>
-                            <label for="attach-chat">
-                                <input type="file" id="attach-chat" name="my-attach-chat" class="attach-chat" 
+                            <label for="attachment-chat-<%=conversation._id%>">
+                                <input type="file" id="attachment-chat-<%=conversation._id%>" name="my-attachment-chat" class="attachment-chat" 
                                 data-chat="<%=conversation._id%>">
                                 <i class="fa fa-paperclip"></i>
                             </label>
