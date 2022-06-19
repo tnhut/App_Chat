@@ -25,7 +25,7 @@ function textAndEmojiChat(divId){
                     message:data.message
                 };
                 // Step 01: Xử lý message data trước khi show
-                let messageOfMe=$(`<div class="bubble me data-mess-id="${data.message._id}"></div>`);
+                let messageOfMe=$(`<div class="bubble me" data-mess-id="${data.message._id}"></div>`);
                 messageOfMe.text(data.message.text);
                 let convertEmojiMessage=emojione.toImage(messageOfMe.html());
                 if(dataTextEmojiForSend.isChatGroup){
@@ -88,7 +88,7 @@ $(document).ready(function(){
         let divId="";
       
         // Step 01: Xử lý message data trước khi show
-        let messageOfYou=$(`<div class="bubble you data-mess-id="${reponse.message._id}"></div>`);
+        let messageOfYou=$(`<div class="bubble you" data-mess-id="${reponse.message._id}"></div>`);
         messageOfYou.text(reponse.message.text);
         let convertEmojiMessage=emojione.toImage(messageOfYou.html());
         if(reponse.currentGroupId){
