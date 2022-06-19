@@ -25,7 +25,8 @@ export const transErrors={
     user_current_password_failed:"Mật khẩu hiện tại không chính xác",
     conversation_not_found:"Trò chuyện không tồn tại",
     image_message_type:"Kiểu File không hợp lệ",
-    image_message_size:"Ảnh upload cho phép tối đa 1M"
+    image_message_size:"Ảnh upload cho phép tối đa 1M",
+    attachment_message_size:"Tệp  upload cho phép tối đa 1M"
     
 };
 
