@@ -200,6 +200,9 @@ function changeScreenChat(){
 
     //Sự kien cho việc send tep trong tin nhan
     attachmentChat(divId);
+
+    //Sự kien cho việc gọi video
+    videoChat(divId)
   })
 }
 
@@ -222,6 +225,12 @@ function bufferToBase64(buffer){
   return btoa(new Uint8Array(buffer)
   .reduce((data,byte)=>data+String.fromCharCode(byte),'')
   );
+}
+
+function ClickVideoChatGroup(){
+  $("#video-chat-group").bind("click", function(){
+      alertify.notify("Không khả dụng tính năng này với trò chuyện nhóm","error",7)
+  })
 }
 
 $(document).ready(function() {
@@ -264,5 +273,7 @@ $(document).ready(function() {
  // hover vào cuộc trò chuyện đầu tiên khi mở trang web
   hoverItemChatInitPage();
 
+  // Click vào Caremra trong trò chuyện
+  ClickVideoChatGroup();
  
 });
