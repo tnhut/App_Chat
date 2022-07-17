@@ -14,6 +14,18 @@ function videoChat(divId){
  })
 }
 
+function playVideoStream(videoTagId, stream){
+    let video=document.getElementById(videoTagId);
+    video.srcObject=stream;
+    video.onloadeddata=function(){
+        video.play();
+    }
+}
+
+function closeVideoStream(stream){
+    return stream.getTracks().forEach(track=>track.stop());
+}
+
 $(document).ready(function(){
     // Step 02 of caller
     socket.on("server-send-listener-is-offline",function(){
@@ -21,9 +33,16 @@ $(document).ready(function(){
     });
 
     let getPeerId="";
-    const peer= new Peer();
+    const peer= new Peer({
+        key:"peerjs",
+        host:"peerjs-server-trungquandev.herokuapp.com",
+        secure:true,
+        port:443,
+        debug:3 // log all, production not set debug
+    });
     peer.on("open", function(peerId){
         getPeerId=peerId;
+        
     })
 
     // Step 03 of listener
@@ -41,6 +60,7 @@ $(document).ready(function(){
     socket.emit("listener-emit-peer-id-to-server",dataToEmit);
     });
 
+    let timerInterval;
     // Step 05 of caller
     socket.on("server-send-peer-id-of-listener-to-caller",function(response){
       
@@ -54,7 +74,6 @@ $(document).ready(function(){
         // Step 06 of caller
         socket.emit("caller-request-call-to-server",dataToEmit);
 
-        let timerInterval;
         Swal.fire({
           
             icon: "success",
@@ -79,10 +98,14 @@ $(document).ready(function(){
                     socket.emit("caller-cancel-request-call-to-server",dataToEmit);
                 });
 
-                Swal.showLoading();
-                timerInterval=setInterval(()=>{
-                    Swal.getContent().querySelector("strong").textContent=Math.ceil(Swal.getTimerLeft()/1000);
-                },1000);
+                if(Swal.getContent().querySelector!==null){
+                    Swal.showLoading();
+                    timerInterval=setInterval(()=>{
+                        Swal.getContent().querySelector("strong").textContent=Math.ceil(Swal.getTimerLeft()/1000);
+                    },1000);
+                }
+
+              
             },
             onOpen:()=>{
                 // Step 12 of caller
@@ -102,12 +125,6 @@ $(document).ready(function(){
                     });
                 });
 
-                 // Step 13 of caller
-                 socket.on("server-send-accept-call-to-caller", function(response){
-                    Swal.close();
-                    clearInterval(timerInterval);
-                    console.log("caller okeee");
-                 })
             },
             onClose:()=>{
                 clearInterval(timerInterval);
@@ -128,7 +145,7 @@ $(document).ready(function(){
             listenerPeerId:response.listenerPeerId
         };
 
-        let timerInterval;
+     
         Swal.fire({
           
             icon: "success",
@@ -167,10 +184,12 @@ $(document).ready(function(){
                    
                 });
 
-                Swal.showLoading();
-                timerInterval=setInterval(()=>{
-                    Swal.getContent().querySelector("strong").textContent=Math.ceil(Swal.getTimerLeft()/1000);
-                },1000);
+                if(Swal.getContent().querySelector!==null){
+                    Swal.showLoading();
+                    timerInterval=setInterval(()=>{
+                        Swal.getContent().querySelector("strong").textContent=Math.ceil(Swal.getTimerLeft()/1000);
+                    },1000);
+                }
             },
             onOpen:()=>{
                 // Step 09 of listener
@@ -179,12 +198,6 @@ $(document).ready(function(){
                     clearInterval(timerInterval);
                 })
 
-                 // Step 14 of listener
-                 socket.on("server-send-accept-call-to-listener", function(response){
-                    Swal.close();
-                    clearInterval(timerInterval);
-                    console.log("Listener okeee");
-                 });
             },
             onClose:()=>{
                 clearInterval(timerInterval);
@@ -195,5 +208,100 @@ $(document).ready(function(){
         })
     });
 
+     // Step 13 of caller
+     socket.on("server-send-accept-call-to-caller", function(response){
+        Swal.close();
+        clearInterval(timerInterval);
+       
+        let getUserMedia = (navigator.getUserMedia || navigator.webkitGetUserMedia 
+        || navigator.mozGetUserMedia).bind(navigator);
 
+        getUserMedia({video: true, audio: true}, function(stream) {
+            $("#streamModal").modal("show");
+
+            // Play my stream in local (of caller)
+            playVideoStream("local-stream",stream);
+
+            // Call to listenner
+            let call = peer.call(response.listenerPeerId, stream);
+
+            // Listen & Play stream by listenner
+            call.on("stream", function(remoteStream) {
+               // Play  stream of listenner
+                playVideoStream("remote-stream",remoteStream);
+            });
+
+            // Close modal: remove stream
+            $("#streamModal").on("hidden.bs.modal",function(){
+                closeVideoStream(stream);
+
+                Swal.fire({
+                    type:"info",
+                    title:`Đã kết thúc cuộc gọi với &nbsp; <span style="color: #2ECC71;"> ${response.listenerName}</span> &nbsp`,
+                    backdrop:"rgba(85,85,85,0.4)",
+                    width:"52rem",
+                    allowOutsideClick:false,
+                    confirmButtonColor: '#2ECC71;',
+                    confirmButtonText: 'Xác nhận'
+                });
+            })
+          }, function(err) {
+            
+            if(err.toString()=== "NotAllowedError: Permission denied"){
+                alertify.notify("Xin lỗi bạn đã tắt quyền truy cập vào thiết bị nghe gọi","error",7)
+            }
+
+            if(err.toString()=== "NotFoundError: Requested device not found"){
+                alertify.notify("Xin lỗi không tìm thấy thiết bị nghe gọi trên thiết bị của bạn","error",7)
+            }
+        });
+     })
+
+    // Step 14 of listener
+    socket.on("server-send-accept-call-to-listener", function(response){
+        Swal.close();
+        clearInterval(timerInterval);
+        
+        let getUserMedia = (navigator.getUserMedia || navigator.webkitGetUserMedia 
+        || navigator.mozGetUserMedia).bind(navigator);;
+        
+        peer.on("call", function(call) {
+            getUserMedia({video: true, audio: true}, function(stream) {
+
+                $("#streamModal").modal("show");
+
+                // Play my stream in local (of listenner)
+                playVideoStream("local-stream",stream);
+
+                call.answer(stream); // Answer the call with an A/V stream.
+                call.on("stream", function(remoteStream) {
+                    // Play  stream of caller
+                    playVideoStream("remote-stream",remoteStream);
+                });
+
+                // Close modal: remove stream
+                $("#streamModal").on("hidden.bs.modal",function(){
+                    closeVideoStream(stream);
+
+                    Swal.fire({
+                        type:"info",
+                        title:`Đã kết thúc cuộc gọi với &nbsp; <span style="color: #2ECC71;"> ${response.callerName}</span> &nbsp`,
+                        backdrop:"rgba(85,85,85,0.4)",
+                        width:"52rem",
+                        allowOutsideClick:false,
+                        confirmButtonColor: '#2ECC71;',
+                        confirmButtonText: 'Xác nhận'
+                    });
+                })
+            }, function(err) {
+                if(err.toString()=== "NotAllowedError: Permission denied"){
+                    alertify.notify("Xin lỗi bạn đã tắt quyền truy cập vào thiết bị nghe gọi","error",7)
+                }
+
+                if(err.toString()=== "NotFoundError: Requested device not found"){
+                    alertify.notify("Xin lỗi không tìm thấy thiết bị nghe gọi trên thiết bị của bạn","error",7)
+                }
+            });
+        });
+     });
 })
