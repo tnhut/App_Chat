@@ -302,6 +302,28 @@ ContactSchema.statics={
         }, {
             "updatedAt":Date.now()
         }).exec();
+    },
+
+    /**
+     * Get Contacts Friend by UserId
+     * @param {String} userId 
+     * @returns 
+     */
+     getFriends(userId){
+        // Lay ra 1 trong 2 TH
+        // 1 mình gửi ket bn cho ngươi khac va được accept)
+        // 2 người khác gửi ket bn cho mình va được accept)
+        return this.find({
+            $and:[
+                {$or:[
+                    {"userId":userId},
+                    {"contactId":userId}
+                ]},
+                {"status":true},
+            ]
+        }).sort({
+            "updatedAt":-1
+        }).exec();
     }
 }
 
